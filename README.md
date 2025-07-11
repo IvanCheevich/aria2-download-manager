@@ -1,49 +1,146 @@
 # Aria2 Download Manager
 
-A modern, cross-platform download manager built with aria2 and Python.
+Современный менеджер загрузок с графическим интерфейсом, построенный на основе aria2 и GTK.
 
-## Features
+## Возможности
 
-- 🚀 Fast multi-threaded downloads
-- 🎯 Cross-platform support (Windows, Linux, macOS)
-- 🖥️ Modern GUI interface
-- 📊 Real-time download monitoring
-- 🔄 Resume interrupted downloads
-- 📁 Flexible download organization
+- 🚀 Быстрые многопоточные загрузки
+- 📊 Отображение прогресса загрузки в реальном времени  
+- ⏸️ Пауза и возобновление загрузок
+- 🗑️ Удаление загрузок и файлов
+- 📁 Управление местом сохранения файлов
+- 🖥️ Современный GTK интерфейс
+- 🔗 Интеграция с меню приложений Gnome
 
-## Status
+## Установка
 
-🚧 **Project in development** - Starting fresh with a clean codebase
+### Требования
 
-## Planned Features
+- Python 3.7+
+- GTK 3
+- aria2
+- PyGObject
 
-- [ ] Cross-platform GUI application
-- [ ] Windows standalone executable
-- [ ] Linux AppImage/Flatpak
-- [ ] macOS app bundle
-- [ ] Web interface
-- [ ] Command-line interface
-- [ ] Download scheduling
-- [ ] Bandwidth management
-- [ ] Plugin system
+### Автоматическая установка
 
-## Development
+1. Клонируйте репозиторий:
+```bash
+git clone https://github.com/yourusername/aria2-download-manager.git
+cd aria2-download-manager
+```
 
-This project is being rebuilt from scratch with focus on:
-- Clean, maintainable code
-- Proper error handling
-- Comprehensive testing
-- User-friendly interface
-- Cross-platform compatibility
+2. Запустите скрипт установки:
+```bash
+sudo ./install.sh
+```
 
-## License
+### Ручная установка
 
-MIT License - see LICENSE file for details
+1. Установите зависимости:
 
-## Contributing
+**Ubuntu/Debian:**
+```bash
+sudo apt update
+sudo apt install aria2 python3-gi python3-gi-cairo gir1.2-gtk-3.0 python3-pip
+```
 
-Contributions are welcome! Please feel free to submit issues and pull requests.
+**Fedora:**
+```bash
+sudo dnf install aria2 python3-gobject gtk3-devel python3-pip
+```
+
+**Arch Linux:**
+```bash
+sudo pacman -S aria2 python-gobject gtk3 python-pip
+```
+
+2. Установите Python зависимости:
+```bash
+pip3 install -r requirements.txt
+```
+
+3. Сделайте исполняемым:
+```bash
+chmod +x aria2-download-manager
+```
+
+## Использование
+
+### Запуск из меню
+
+После установки приложение появится в меню приложений в разделе "Интернет" или "Сеть".
+
+### Запуск из терминала
+
+```bash
+aria2-download-manager
+```
+
+### Основные функции
+
+1. **Добавление загрузки**: Нажмите кнопку "+" и введите URL
+2. **Пауза/Возобновление**: Используйте кнопку воспроизведения/паузы
+3. **Удаление**: Нажмите кнопку корзины для удаления загрузки
+4. **Открыть папку**: Кнопка папки откроет директорию с файлом
+5. **Мониторинг**: Прогресс обновляется в реальном времени
+
+## Скриншоты
+
+[Скриншоты будут добавлены позже]
+
+## Деинсталляция
+
+```bash
+sudo ./uninstall.sh
+```
+
+## Разработка
+
+### Структура проекта
+
+```
+aria2-download-manager/
+├── src/
+│   ├── __init__.py
+│   ├── app.py              # Главное приложение
+│   ├── main_window.py      # Основное окно
+│   ├── aria2_client.py     # Клиент для aria2
+│   └── utils.py            # Утилитные функции
+├── install.sh              # Скрипт установки
+├── uninstall.sh            # Скрипт деинсталляции
+├── requirements.txt        # Python зависимости
+└── README.md
+```
+
+### Локальный запуск для разработки
+
+```bash
+cd aria2-download-manager
+python3 src/app.py
+```
+
+## Устранение неполадок
+
+### aria2 не найден
+Убедитесь, что aria2 установлен и доступен в PATH:
+```bash
+aria2c --version
+```
+
+### Ошибки PyGObject
+Установите необходимые пакеты GTK для вашего дистрибутива.
+
+### Проблемы с правами
+Убедитесь, что aria2 может записывать в выбранную папку загрузок.
+
+## Лицензия
+
+MIT License - см. файл LICENSE для подробностей.
+
+## Вклад в проект
+
+Мы приветствуем ваш вклад! Пожалуйста, создавайте issues и pull requests.
 
 ---
 
-*Built with ❤️ using Python and aria2* 
+*Создано с ❤️ используя Python, GTK и aria2* 

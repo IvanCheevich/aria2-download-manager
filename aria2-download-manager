@@ -1,0 +1,18 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+
+# Добавляем путь к src
+script_dir = os.path.dirname(os.path.abspath(__file__))
+src_dir = os.path.join(script_dir, 'src')
+sys.path.insert(0, src_dir)
+
+# Запускаем простую версию GUI
+try:
+    from simple_gui import main
+    sys.exit(main())
+except ImportError:
+    print("Ошибка: Не удалось импортировать модули.")
+    print("Убедитесь, что все файлы установлены правильно.")
+    sys.exit(1)

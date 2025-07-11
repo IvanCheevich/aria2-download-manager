@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Aria2 Download Manager (Debug)
+Comment=Отладочная версия менеджера загрузок aria2 с подробными логами
+Exec=/usr/bin/python3 /opt/aria2-download-manager/src/simple_gui_debug.py
+Icon=/opt/aria2-download-manager/icon.png
+Terminal=false
+Type=Application
+Categories=Network;FileTransfer;Development;
+StartupNotify=true
+Keywords=download;torrent;aria2;manager;debug;

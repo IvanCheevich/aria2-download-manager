@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Aria2 Download Manager (Debug)
+Comment=GUI for aria2 downloader (debug version)
+Exec=python3 /opt/aria2-download-manager/src/simple_gui_debug.py
+Icon=/opt/aria2-download-manager/icon.svg
+Terminal=false
+Type=Application
+Categories=Network;FileTransfer;
+StartupNotify=true

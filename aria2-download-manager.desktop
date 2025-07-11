@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Aria2 Download Manager
+Comment=Графический интерфейс для aria2 с функциями управления загрузками
+Exec=/usr/bin/python3 /opt/aria2-download-manager/src/simple_gui.py
+Icon=/opt/aria2-download-manager/icon.png
+Terminal=false
+Type=Application
+Categories=Network;FileTransfer;
+StartupNotify=true
+Keywords=download;torrent;aria2;manager;
