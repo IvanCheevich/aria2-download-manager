@@ -13,50 +13,80 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # Устанавливаем зависимости
-echo "Проверка зависимостей..."
+echo "🔧 Устанавливаем все необходимые зависимости..."
 
-# Проверяем aria2
+# Определяем дистрибутив и устанавливаем зависимости
+if command -v apt-get &> /dev/null; then
+    echo "📦 Обнаружен Debian/Ubuntu. Устанавливаем пакеты..."
+    apt-get update
+    apt-get install -y aria2 python3 python3-tk python3-pip python3-requests curl wget
+    echo "✅ Пакеты Debian/Ubuntu установлены"
+elif command -v dnf &> /dev/null; then
+    echo "📦 Обнаружен Fedora. Устанавливаем пакеты..."
+    dnf install -y aria2 python3 python3-tkinter python3-pip python3-requests curl wget
+    echo "✅ Пакеты Fedora установлены"
+elif command -v yum &> /dev/null; then
+    echo "📦 Обнаружен CentOS/RHEL. Устанавливаем пакеты..."
+    yum install -y epel-release
+    yum install -y aria2 python3 python3-tkinter python3-pip curl wget
+    pip3 install requests
+    echo "✅ Пакеты CentOS/RHEL установлены"
+elif command -v pacman &> /dev/null; then
+    echo "📦 Обнаружен Arch Linux. Устанавливаем пакеты..."
+    pacman -Syu --noconfirm aria2 python python-pip curl wget tk
+    pip3 install requests
+    echo "✅ Пакеты Arch Linux установлены"
+elif command -v zypper &> /dev/null; then
+    echo "📦 Обнаружен openSUSE. Устанавливаем пакеты..."
+    zypper refresh
+    zypper install -y aria2 python3 python3-tk python3-pip python3-requests curl wget
+    echo "✅ Пакеты openSUSE установлены"
+else
+    echo "❌ Неподдерживаемый дистрибутив. Установите следующие пакеты вручную:"
+    echo "   • aria2"
+    echo "   • python3"
+    echo "   • python3-tk (или python3-tkinter)"
+    echo "   • python3-requests"
+    echo "   • curl"
+    echo "   • wget"
+    exit 1
+fi
+
+# Проверяем установку всех компонентов
+echo "🔍 Проверяем установленные компоненты..."
+
 if ! command -v aria2c &> /dev/null; then
-    echo "aria2 не найден. Устанавливаем..."
-    if command -v apt-get &> /dev/null; then
-        apt-get update
-        apt-get install -y aria2
-    elif command -v dnf &> /dev/null; then
-        dnf install -y aria2
-    elif command -v pacman &> /dev/null; then
-        pacman -S --noconfirm aria2
-    else
-        echo "Неподдерживаемый пакетный менеджер. Установите aria2 вручную."
+    echo "❌ ОШИБКА: aria2 не установлен"
+    exit 1
+fi
+echo "✅ aria2c найден: $(aria2c --version | head -1)"
+
+if ! command -v python3 &> /dev/null; then
+    echo "❌ ОШИБКА: python3 не установлен" 
+    exit 1
+fi
+echo "✅ python3 найден: $(python3 --version)"
+
+# Проверяем tkinter
+if ! python3 -c "import tkinter" &> /dev/null; then
+    echo "❌ ОШИБКА: tkinter не установлен"
+    echo "Попробуйте установить: python3-tk или python3-tkinter"
+    exit 1
+fi
+echo "✅ tkinter доступен"
+
+# Проверяем requests
+if ! python3 -c "import requests" &> /dev/null; then
+    echo "⚠️  requests не найден, устанавливаем через pip..."
+    pip3 install requests
+    if ! python3 -c "import requests" &> /dev/null; then
+        echo "❌ ОШИБКА: не удалось установить requests"
         exit 1
     fi
 fi
+echo "✅ requests доступен"
 
-# Проверяем Python и tkinter
-if ! python3 -c "import tkinter" &> /dev/null; then
-    echo "tkinter не найден. Устанавливаем..."
-    if command -v apt-get &> /dev/null; then
-        apt-get install -y python3-tk
-    elif command -v dnf &> /dev/null; then
-        dnf install -y tkinter
-    elif command -v pacman &> /dev/null; then
-        pacman -S --noconfirm tk
-    fi
-fi
-
-# Проверяем Python зависимости
-echo "Проверяем Python зависимости..."
-if ! python3 -c "import requests" &> /dev/null; then
-    echo "requests не найден. Устанавливаем через системный пакетный менеджер..."
-    if command -v apt-get &> /dev/null; then
-        apt-get install -y python3-requests
-    elif command -v dnf &> /dev/null; then
-        dnf install -y python3-requests
-    elif command -v pacman &> /dev/null; then
-        pacman -S --noconfirm python-requests
-    else
-        echo "Установите python3-requests вручную или используйте pip3 install requests --break-system-packages"
-    fi
-fi
+echo "🎉 Все зависимости установлены успешно!"
 
 # Копируем файлы
 echo "Копируем файлы..."
@@ -92,5 +122,21 @@ gtk-update-icon-cache -t /usr/share/icons/hicolor/ || true
 # Обновляем базу данных приложений
 update-desktop-database /usr/share/applications/ || true
 
-echo "Установка завершена!"
-echo "Приложение можно найти в меню приложений или запустить командой: aria2-download-manager"
+echo ""
+echo "🎉 Установка завершена успешно!"
+echo ""
+echo "📋 Способы запуска приложения:"
+echo "   • Через меню приложений (раздел 'Интернет')"
+echo "   • Команда в терминале: aria2-download-manager"
+echo "   • Напрямую: python3 /opt/aria2-download-manager/src/simple_gui.py"
+echo ""
+echo "🛠️  Основные функции:"
+echo "   • ➕ Добавление URL загрузок"
+echo "   • 🧲 Поддержка торрент файлов"
+echo "   • ⏸️ Пауза/возобновление загрузок"
+echo "   • 🗑️ Удаление загрузок"
+echo "   • 📁 Быстрый доступ к папке загрузок"
+echo "   • 🔄 Автоматическое обновление списка"
+echo ""
+echo "🗂️  Файлы загружаются в: ~/Downloads"
+echo "📦 Aria2 Download Manager готов к использованию!"
